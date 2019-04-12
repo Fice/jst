@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "benchmark": "./scripts/benchmark",
-    "build": "npm install && ./scripts/build",
+    "build": "./scripts/build",
     "lint": "tslint -p tsconfig.json --type-check",
     "release": "./scripts/release",
     "test": "jest src  --verbose --coverage",
