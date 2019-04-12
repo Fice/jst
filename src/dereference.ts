@@ -48,8 +48,6 @@ import { Dereferencer, Resolver } from './types';
 // * Cleaner and more modular design of codebase. It is ok to sacrifice
 //   performance for this.
 
-const isHttp: RegExp = /^http/;
-const isRemoteRef = (ref: string): boolean => isHttp.test(ref);
 
 export const dereference: Dereferencer = (root, resolver) => {
   // ### JSON In, JSON Out
@@ -139,7 +137,7 @@ export const dereference: Dereferencer = (root, resolver) => {
                 traverse(reference, `${nodePath}/${encodeToken(key)}`),
                 true,
               );
-            } else { //external (or unknown)
+            } else { // external (or unknown)
               if (!resolve) {
                 throw new TypeError(
                   'argument: resolver is required to dereference a json uri.');
