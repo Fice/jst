@@ -132,7 +132,14 @@ export const dereference: Dereferencer = (root, resolver) => {
             // Here we resolve a JSON reference (uri). In order to do so
             // correctly we must make a distinction between external
             // references and internal (circular) references.
-            if (isRemoteRef(value)) {
+            if (isPointer(value)) {
+              reference = get(schema, value);
+              resolution = merge(
+                resolution,
+                traverse(reference, `${nodePath}/${encodeToken(key)}`),
+                true,
+              );
+            } else { //external (or unknown)
               if (!resolve) {
                 throw new TypeError(
                   'argument: resolver is required to dereference a json uri.');
@@ -157,16 +164,6 @@ export const dereference: Dereferencer = (root, resolver) => {
               }
 
               // de-reference a json pointer
-            } else if (isPointer(value)) {
-              reference = get(schema, value);
-              resolution = merge(
-                resolution,
-                traverse(reference, `${nodePath}/${encodeToken(key)}`),
-                true,
-              );
-            } else {
-              throw new Error(
-                `could not dereference value as a json pointer or uri: ${value}`);
             }
 
             if (!reference) {
